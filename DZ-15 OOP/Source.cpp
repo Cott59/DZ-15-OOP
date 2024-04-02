@@ -18,9 +18,12 @@ public:
 		Salary_ = rand() % 5000 + 70000;
 	};
 	
-	void Info_Worker() {
+	/*void Info_Worker() {
 		std::cout << " Id: " << Id_ << "\t Name: " << Name_ << "\t Shift : " << Shift_ << "\t Salary: " << Salary_ << '\n';
-	}
+	}*/
+
+	int Get_Id() { return Id_; }
+	std::string Get_Name() { return Name_; }
 	std::string Get_Shift() { return Shift_; }
 	long long int Get_Salary() { return Salary_; }
 
@@ -50,79 +53,28 @@ public:
 		for (int i = 0; i < counter; i++)
 			Wk.push_back(*New_Worker());
 	}
-	virtual void Workers_Info() {
-		for (auto p : Wk) {
-			p.Info_Worker();
-		}
-	}
-	void Worker_Shift(std::string shift) {
-		for (auto p : Wk) {
-			if (p.Get_Shift() == shift)
-				p.Info_Worker();
-		}
-	}
-	void Get_Worker_Max_Salary(int num, std::string shift) {
-		std::vector<Worker> tmp;
-		std::for_each(Wk.begin(), Wk.end(), [&tmp, &shift](Worker& worker) {
-			if (worker.Get_Shift() == shift)
-				tmp.push_back(worker);
-			});
-		std::sort(tmp.begin(), tmp.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() > obj2.Get_Salary(); });
-		if (tmp.size() < num) {
-			num = tmp.size();
-			std::cout << " zzzzzzz\n";
-		}
-		for (auto i = tmp.begin(); i != tmp.begin() + num; i++)
-			i->Info_Worker();
-	}
-	void Get_Worker_Max_Salary(int num) {
-		std::sort(Wk.begin(), Wk.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() > obj2.Get_Salary(); });
-		for (auto i = Wk.begin(); i != Wk.begin() + num; i++)
-			i->Info_Worker();
-	}
-	void Get_Worker_Min_Salary(int num, std::string shift) {
-		std::vector<Worker> tmp;
-		std::for_each(Wk.begin(), Wk.end(), [&tmp, &shift](Worker& worker) {
-			if (worker.Get_Shift() == shift)
-				tmp.push_back(worker);
-			});
-		std::sort(tmp.begin(), tmp.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
-		if (tmp.size() < num) {
-			num = tmp.size();
-			std::cout << " zzzzzzz\n";
-		}
-		for (auto i = tmp.begin(); i != tmp.begin() + num; i++)
-			i->Info_Worker();
-	}
-	void Get_Worker_Min_Salary(int num) {
-		std::sort(Wk.begin(), Wk.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
-		for (auto i = Wk.begin(); i != Wk.begin() + num; i++)
-			i->Info_Worker();
-	}
-protected:
 	std::vector<Worker> Wk;
+	
 private:
 	Worker* New_Worker() {
 		Worker* tmp = new Worker();
 		return tmp;
 	}
+	
 };
 
-class PrintWorkersData :public Workers
+class PrintWorkersData
 {
 public:
-	PrintWorkersData(Workers& workes) {
-		
-		tmp = Wk;
-	};
-
-	void Workers_Info() {
-		for (auto p : Wk) {
-			p.Info_Worker();
+	static void Workers_Info(Workers& Works, std::ostream& out = std::cout) {
+		for (auto p : Works.Wk) {
+			out << " Id: " << p.Get_Id() << "\t Name: " <<p.Get_Name() << "\t Shift : " << p.Get_Shift() << "\t Salary: " << p.Get_Salary() << '\n';
 		}
 	}
 
-	void Get_Worker_Max_Salary(int num, std::string shift) {
+
+
+	/*static void Get_Worker_Max_Salary(Workers& Works,int num, std::string shift,std::ostream & out =std::cout) {
 		std::vector<Worker> tmp;
 		std::for_each(Wk.begin(), Wk.end(), [&tmp, &shift](Worker& worker) {
 			if (worker.Get_Shift() == shift)
@@ -159,10 +111,10 @@ public:
 		std::sort(Wk.begin(), Wk.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
 		for (auto i = Wk.begin(); i != Wk.begin() + num; i++)
 			i->Info_Worker();
-	}
+	}*/
 
-private:
-	std::vector<Worker> tmp;
+
+	
 
 };
 
@@ -177,7 +129,15 @@ int main() {
 
 	
 	Workers wer(14);
-	wer.Workers_Info();
+	PrintWorkersData::Workers_Info(wer);
+
+
+
+
+
+
+
+	/*wer.Workers_Info();
 	std::cout << "==================================\n";
 	wer.Worker_Shift("Day");
 	std::cout << "==================================\n";
@@ -193,7 +153,7 @@ int main() {
 	std::cout << "==================================\n";
 	wer.Get_Worker_Min_Salary(3, "Night");
 	std::cout << "==================================\n";
-	wer.Get_Worker_Min_Salary(4);
+	wer.Get_Worker_Min_Salary(4);*/
 
 	return 0;
 }
