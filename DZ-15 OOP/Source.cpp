@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 #include<vector>
 #include<algorithm>
@@ -67,58 +68,54 @@ class PrintWorkersData
 {
 public:
 	static void Workers_Info(Workers& Works, std::ostream& out = std::cout) {
-		for (auto p : Works.Wk) {
-			out << " Id: " << p.Get_Id() << "\t Name: " <<p.Get_Name() << "\t Shift : " << p.Get_Shift() << "\t Salary: " << p.Get_Salary() << '\n';
-		}
+		for (auto p : Works.Wk) 
+			out << " Id: " << p.Get_Id() << "\t Name: " << p.Get_Name() << "\t Shift : " << p.Get_Shift() << "\t Salary: " << p.Get_Salary() << '\n';
 	}
 
-
-
-	/*static void Get_Worker_Max_Salary(Workers& Works,int num, std::string shift,std::ostream & out =std::cout) {
+	static void Get_Worker_Max_Salary(Workers& Works,int num, std::string shift, std::ostream& out = std::cout) {
 		std::vector<Worker> tmp;
-		std::for_each(Wk.begin(), Wk.end(), [&tmp, &shift](Worker& worker) {
-			if (worker.Get_Shift() == shift)
-				tmp.push_back(worker);
-			});
+		if (shift == "")
+			tmp = Works.Wk;
+		else
+		{
+			std::for_each(Works.Wk.begin(), Works.Wk.end(), [&tmp, &shift](Worker& worker) {
+				if (worker.Get_Shift() == shift)
+					tmp.push_back(worker);
+				});
+		}
 		std::sort(tmp.begin(), tmp.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() > obj2.Get_Salary(); });
-		if (tmp.size() < num) {
+		if (tmp.size() < num) 
 			num = tmp.size();
-			std::cout << " zzzzzzz\n";
-		}
-		for (auto i = tmp.begin(); i != tmp.begin() + num; i++)
-			i->Info_Worker();
+		for (auto p = tmp.begin(); p != tmp.begin() + num; p++)
+			out << " Id: " << p->Get_Id() << "\t Name: " << p->Get_Name() << "\t Shift : " << p->Get_Shift() << "\t Salary: " << p->Get_Salary() << '\n';
 	}
-	void Get_Worker_Max_Salary(int num) {
-		std::sort(Wk.begin(), Wk.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() > obj2.Get_Salary(); });
-		for (auto i = Wk.begin(); i != Wk.begin() + num; i++)
-			i->Info_Worker();
-	}
-	void Get_Worker_Min_Salary(int num, std::string shift) {
-		std::vector<Worker> tmp;
-		std::for_each(Wk.begin(), Wk.end(), [&tmp, &shift](Worker& worker) {
-			if (worker.Get_Shift() == shift)
-				tmp.push_back(worker);
-			});
-		std::sort(tmp.begin(), tmp.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
-		if (tmp.size() < num) {
-			num = tmp.size();
-			std::cout << " zzzzzzz\n";
-		}
-		for (auto i = tmp.begin(); i != tmp.begin() + num; i++)
-			i->Info_Worker();
-	}
-	void Get_Worker_Min_Salary(int num) {
-		std::sort(Wk.begin(), Wk.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
-		for (auto i = Wk.begin(); i != Wk.begin() + num; i++)
-			i->Info_Worker();
-	}*/
-
-
 	
-
+	static void Get_Worker_Min_Salary(Workers& Works, int num, std::string shift, std::ostream& out = std::cout) {
+		std::vector<Worker> tmp;
+		if (shift == "")
+			tmp = Works.Wk;
+		else
+		{
+			std::for_each(Works.Wk.begin(), Works.Wk.end(), [&tmp, &shift](Worker& worker) {
+				if (worker.Get_Shift() == shift)
+					tmp.push_back(worker);
+				});
+		}
+		std::sort(tmp.begin(), tmp.end(), [](Worker& obj1, Worker& obj2)-> bool { return obj1.Get_Salary() < obj2.Get_Salary(); });
+		if (tmp.size() < num) 
+			num = tmp.size();
+		for (auto p = tmp.begin(); p != tmp.begin() + num; p++)
+			out << " Id: " << p->Get_Id() << "\t Name: " << p->Get_Name() << "\t Shift : " << p->Get_Shift() << "\t Salary: " << p->Get_Salary() << '\n';
+	}
 };
 
+class InputWorkersData
+{
+public:
 
+
+
+};
 
 
 
@@ -127,9 +124,18 @@ public:
 int main() {
 	srand(time(NULL));
 
-	
+	std::ofstream f_out("Workers");
 	Workers wer(14);
-	PrintWorkersData::Workers_Info(wer);
+	//PrintWorkersData::Workers_Info(wer);
+	PrintWorkersData::Get_Worker_Max_Salary(wer, 3, "Day", f_out);
+	PrintWorkersData::Get_Worker_Max_Salary(wer, 3, "Night", f_out);
+	PrintWorkersData::Get_Worker_Max_Salary(wer, 3, "", f_out);
+	PrintWorkersData::Get_Worker_Min_Salary(wer, 3, "Day", f_out);
+	PrintWorkersData::Get_Worker_Min_Salary(wer, 3, "Night", f_out);
+	PrintWorkersData::Get_Worker_Min_Salary(wer, 3, "", f_out);
+
+
+
 
 
 
